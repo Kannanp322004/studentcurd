@@ -1,41 +1,101 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Student Management System</title>
 
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <div class="container">
-      <h1>Student Management System</h1>
+    <!-- Hero Section -->
+    <header class="hero">
+      <h1>🎓 Student Management System</h1>
+      <p>Manage Student Records Easily with Spring Boot & PostgreSQL</p>
+    </header>
 
-      <div class="form">
-        <input type="hidden" id="studentId" />
-
-        <input type="text" id="name" placeholder="Enter Name" />
-
-        <input type="number" id="age" placeholder="Enter Age" />
-
-        <input type="text" id="department" placeholder="Enter Department" />
-
-        <button id="saveBtn">Add Student</button>
+    <!-- Dashboard -->
+    <section class="dashboard">
+      <div class="card">
+        <div class="icon">👨‍🎓</div>
+        <h2 id="totalStudents">0</h2>
+        <p>Total Students</p>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Department</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+      <div class="card">
+        <div class="icon">⚙</div>
+        <h2>CRUD</h2>
+        <p>Operations</p>
+      </div>
 
-        <tbody id="studentTable"></tbody>
-      </table>
-    </div>
+      <div class="card">
+        <div class="icon">☕</div>
+        <h2>Spring Boot</h2>
+        <p>Backend</p>
+      </div>
+    </section>
+
+    <!-- Main Container -->
+    <main class="container">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <h2>📚 Student Records</h2>
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="🔍 Search student..."
+        />
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card">
+        <h3>Add New Student</h3>
+
+        <div class="form">
+          <input type="text" id="name" placeholder="👤 Student Name" />
+
+          <input type="number" id="age" placeholder="🎂 Age" />
+
+          <input type="text" id="department" placeholder="🏢 Department" />
+
+          <button id="saveBtn">➕ Add Student</button>
+        </div>
+      </div>
+
+      <!-- Student Table -->
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+
+              <th>👤 Name</th>
+
+              <th>🎂 Age</th>
+
+              <th>🏢 Department</th>
+
+              <th>⚙ Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="studentTable"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Footer -->
+
+    <footer>
+      <p>
+        © 2026 Student Management System | Developed using Spring Boot,
+        PostgreSQL & Render
+      </p>
+    </footer>
 
     <script src="script.js"></script>
   </body>
