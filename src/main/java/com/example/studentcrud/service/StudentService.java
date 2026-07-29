@@ -67,6 +67,8 @@ public class StudentService {
 
         existingStudent.setAge(student.getAge());
 
+        existingStudent.setGender(student.getGender());
+
         existingStudent.setDepartment(student.getDepartment());
 
 

@@ -50,9 +50,11 @@ async function saveStudent() {
 
   const age = document.getElementById("age").value;
 
+  const gender = document.getElementById("gender").value;
+
   const department = document.getElementById("department").value.trim();
 
-  if (name === "" || age === "" || department === "") {
+  if (name === "" || age === "" || gender === "" || department === "") {
     showToast("⚠ Please fill all fields", "warning");
     return;
   }
@@ -60,6 +62,7 @@ async function saveStudent() {
   const student = {
     name: name,
     age: parseInt(age),
+    gender: gender,
     department: department,
   };
 
@@ -130,6 +133,8 @@ async function loadStudents() {
 
         <td>${student.age}</td>
 
+        <td>${student.gender}</td>
+
         <td>${student.department}</td>
 
         <td>
@@ -171,6 +176,8 @@ async function editStudent(id) {
     document.getElementById("name").value = student.name;
 
     document.getElementById("age").value = student.age;
+
+    document.getElementById("gender").value = student.gender;
 
     document.getElementById("department").value = student.department;
 
@@ -234,6 +241,8 @@ function clearFields() {
 
   document.getElementById("age").value = "";
 
+  document.getElementById("gender").value = "";
+
   document.getElementById("department").value = "";
 
   editMode = false;
@@ -270,6 +279,7 @@ document.addEventListener("keydown", function (event) {
     if (
       active.id === "name" ||
       active.id === "age" ||
+      active.id === "gender" ||
       active.id === "department"
     ) {
       saveStudent();
@@ -281,7 +291,7 @@ document.addEventListener("keydown", function (event) {
 // Input Focus Animation
 // ==========================
 
-document.querySelectorAll(".form input").forEach((input) => {
+document.querySelectorAll(".form input, .from select").forEach((input) => {
   input.addEventListener("focus", () => {
     input.style.transform = "scale(1.03)";
   });
