@@ -6,8 +6,7 @@
 }
 
 body {
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45));
+  background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45));
 
   background-size: cover;
 
@@ -240,4 +239,211 @@ tr:hover {
 
 .delete-btn:hover {
   background: #b71c1c;
+
+  .toast {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    min-width: 280px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(120%);
+    transition: all 0.4s ease;
+    z-index: 9999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  }
+
+  .toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  .toast.success {
+    background: #2ecc71;
+  }
+
+  .toast.error {
+    background: #e74c3c;
+  }
+
+  .toast.warning {
+    background: #f39c12;
+  }
+}
+/* ===========================
+   Delete Modal
+=========================== */
+
+.modal {
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  display: none;
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 99999;
+
+  backdrop-filter: blur(5px);
+}
+
+.modal.show {
+  display: flex;
+
+  animation: fadeIn 0.3s;
+}
+
+.modal-content {
+  background: white;
+
+  width: 380px;
+
+  max-width: 90%;
+
+  padding: 35px;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+
+  animation: popup 0.3s;
+}
+
+.modal-icon {
+  font-size: 65px;
+
+  margin-bottom: 15px;
+}
+
+.modal-content h2 {
+  color: #2c3e50;
+
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  color: #666;
+
+  margin-bottom: 25px;
+}
+
+.modal-buttons {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+}
+
+.cancel-btn {
+  background: #95a5a6;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 22px;
+
+  border-radius: 30px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+.cancel-btn:hover {
+  background: #7f8c8d;
+}
+
+.confirm-btn {
+  background: #e53935;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 22px;
+
+  border-radius: 30px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+.confirm-btn:hover {
+  background: #b71c1c;
+
+  transform: scale(1.05);
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0.8);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.total-card {
+  background: linear-gradient(135deg, #4caf50, #00c853);
+
+  color: white;
+}
+
+.total-card:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+.total-card .icon {
+  font-size: 55px;
+
+  margin-bottom: 10px;
+}
+
+.total-card h2 {
+  font-size: 42px;
+
+  font-weight: bold;
+}
+
+.total-card p {
+  font-size: 18px;
+
+  letter-spacing: 1px;
 }

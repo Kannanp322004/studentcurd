@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Student Management System</title>
 
     <link rel="stylesheet" href="style.css" />
@@ -18,14 +17,15 @@
 
     <!-- Dashboard -->
     <section class="dashboard">
-      <div class="card">
+      <div class="card total-card">
         <div class="icon">👨‍🎓</div>
+
         <h2 id="totalStudents">0</h2>
+
         <p>Total Students</p>
       </div>
-
       <div class="card">
-        <div class="icon">⚙</div>
+        <div class="icon">⚙️</div>
         <h2>CRUD</h2>
         <p>Operations</p>
       </div>
@@ -39,22 +39,21 @@
 
     <!-- Main Container -->
     <main class="container">
-      <!-- Top Bar -->
+      <!-- Search -->
       <div class="top-bar">
         <h2>📚 Student Records</h2>
 
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="🔍 Search student..."
-        />
+        <input type="text" id="searchInput" placeholder="🔍 Search Student" />
       </div>
 
-      <!-- Form Card -->
+      <!-- Form -->
       <div class="form-card">
         <h3>Add New Student</h3>
 
         <div class="form">
+          <!-- Hidden Student ID -->
+          <input type="hidden" id="studentId" />
+
           <input type="text" id="name" placeholder="👤 Student Name" />
 
           <input type="number" id="age" placeholder="🎂 Age" />
@@ -65,7 +64,7 @@
         </div>
       </div>
 
-      <!-- Student Table -->
+      <!-- Table -->
 
       <div class="table-card">
         <table>
@@ -73,13 +72,13 @@
             <tr>
               <th>ID</th>
 
-              <th>👤 Name</th>
+              <th>Name</th>
 
-              <th>🎂 Age</th>
+              <th>Age</th>
 
-              <th>🏢 Department</th>
+              <th>Department</th>
 
-              <th>⚙ Actions</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -87,16 +86,30 @@
         </table>
       </div>
     </main>
+    <!-- Delete Confirmation Modal -->
 
-    <!-- Footer -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-icon">⚠️</div>
+
+        <h2>Delete Student?</h2>
+
+        <p>This action cannot be undone.</p>
+
+        <div class="modal-buttons">
+          <button id="cancelDelete" class="cancel-btn">Cancel</button>
+
+          <button id="confirmDelete" class="confirm-btn">Delete</button>
+        </div>
+      </div>
+    </div>
 
     <footer>
       <p>
-        © 2026 Student Management System | Developed using Spring Boot,
-        PostgreSQL & Render
+        © 2026 Student Management System | Spring Boot • PostgreSQL • Render
       </p>
     </footer>
-
+    <div id="toast" class="toast"></div>
     <script src="script.js"></script>
   </body>
 </html>

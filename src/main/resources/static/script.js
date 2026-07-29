@@ -1,41 +1,70 @@
-const api = "http://localhost:8080/students";
+const api = "/students";
 
 let editMode = false;
 
-// Load students when website opens
+// ==========================
+// Page Load
+// ==========================
 
 window.onload = function () {
   loadStudents();
+
+  document.getElementById("saveBtn").addEventListener("click", saveStudent);
+
+  const search = document.getElementById("searchInput");
+
+  if (search) {
+    search.addEventListener("keyup", filterStudents);
+  }
 };
 
-// Add or Update Student
+// ==========================
+// Toast Notification
+// ==========================
+
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+
+  if (!toast) {
+    alert(message);
+    return;
+  }
+
+  toast.innerHTML = message;
+
+  toast.className = "toast show " + type;
+
+  setTimeout(() => {
+    toast.className = "toast";
+  }, 3000);
+}
+
+// ==========================
+// Add / Update Student
+// ==========================
 
 async function saveStudent() {
   const id = document.getElementById("studentId").value;
 
-  const name = document.getElementById("name").value;
+  const name = document.getElementById("name").value.trim();
 
   const age = document.getElementById("age").value;
 
-  const department = document.getElementById("department").value;
+  const department = document.getElementById("department").value.trim();
 
   if (name === "" || age === "" || department === "") {
-    alert("Please fill all fields");
+    showToast("⚠ Please fill all fields", "warning");
     return;
   }
 
   const student = {
     name: name,
-
     age: parseInt(age),
-
     department: department,
   };
 
   try {
     let response;
-
-    // Update Student
 
     if (editMode) {
       response = await fetch(api + "/" + id, {
@@ -49,12 +78,9 @@ async function saveStudent() {
       });
 
       if (response.ok) {
-        alert("Student Updated Successfully");
+        showToast("✏ Student Updated Successfully");
       }
-    }
-
-    // Add Student
-    else {
+    } else {
       response = await fetch(api, {
         method: "POST",
 
@@ -66,7 +92,7 @@ async function saveStudent() {
       });
 
       if (response.ok) {
-        alert("Student Added Successfully");
+        showToast("✅ Student Added Successfully");
       }
     }
 
@@ -74,97 +100,132 @@ async function saveStudent() {
 
     loadStudents();
   } catch (error) {
-    alert("Error : " + error);
+    showToast("❌ " + error, "error");
   }
 }
-
+// ==========================
 // Display Students
+// ==========================
 
 async function loadStudents() {
-  const response = await fetch(api);
+  try {
+    const response = await fetch(api);
 
-  const students = await response.json();
+    const students = await response.json();
+    animateCounter(students.length);
 
-  const table = document.getElementById("studentTable");
+    const table = document.getElementById("studentTable");
 
-  table.innerHTML = "";
+    table.innerHTML = "";
 
-  students.forEach((student) => {
-    table.innerHTML += `
+    // Update Dashboard Count
 
-        <tr>
+    students.forEach((student) => {
+      table.innerHTML += `
+      <tr>
 
-            <td>${student.id}</td>
+        <td>${student.id}</td>
 
-            <td>${student.name}</td>
+        <td>${student.name}</td>
 
-            <td>${student.age}</td>
+        <td>${student.age}</td>
 
-            <td>${student.department}</td>
+        <td>${student.department}</td>
 
+        <td>
 
-            <td>
+          <button
+            class="edit-btn"
+            onclick="editStudent(${student.id})">
+              ✏ Edit
+          </button>
 
-                <button class="edit-btn" 
-                onclick="editStudent(${student.id})">
-                    Edit
-                </button>
+          <button
+            class="delete-btn"
+            onclick="deleteStudent(${student.id})">
+              🗑 Delete
+          </button>
 
+        </td>
 
-                <button class="delete-btn" 
-                onclick="deleteStudent(${student.id})">
-                    Delete
-                </button>
-
-
-            </td>
-
-
-        </tr>
-
-        `;
-  });
-}
-
-// Edit Student
-
-async function editStudent(id) {
-  const response = await fetch(api + "/" + id);
-
-  const student = await response.json();
-
-  document.getElementById("studentId").value = student.id;
-
-  document.getElementById("name").value = student.name;
-
-  document.getElementById("age").value = student.age;
-
-  document.getElementById("department").value = student.department;
-
-  editMode = true;
-
-  document.getElementById("saveBtn").innerHTML = "Save Changes";
-}
-
-// Delete Student
-
-async function deleteStudent(id) {
-  let confirmDelete = confirm("Do you want to delete this student?");
-
-  if (confirmDelete) {
-    const response = await fetch(api + "/" + id, {
-      method: "DELETE",
+      </tr>
+      `;
     });
-
-    if (response.ok) {
-      alert("Student Deleted Successfully");
-
-      loadStudents();
-    }
+  } catch (error) {
+    showToast("❌ Unable to load students", "error");
   }
 }
 
-// Clear Fields
+// ==========================
+// Edit Student
+// ==========================
+
+async function editStudent(id) {
+  try {
+    const response = await fetch(api + "/" + id);
+
+    const student = await response.json();
+
+    document.getElementById("studentId").value = student.id;
+
+    document.getElementById("name").value = student.name;
+
+    document.getElementById("age").value = student.age;
+
+    document.getElementById("department").value = student.department;
+
+    editMode = true;
+
+    document.getElementById("saveBtn").innerHTML = "💾 Save Changes";
+
+    document.querySelector(".form-card h3").innerHTML = "✏ Edit Student";
+
+    document.getElementById("name").focus();
+  } catch (error) {
+    showToast("❌ Unable to load student", "error");
+  }
+}
+
+// ==========================
+// Modern Delete Confirmation
+// ==========================
+
+let deleteId = null;
+
+function deleteStudent(id) {
+  deleteId = id;
+
+  document.getElementById("deleteModal").classList.add("show");
+}
+
+document.getElementById("cancelDelete").addEventListener("click", function () {
+  document.getElementById("deleteModal").classList.remove("show");
+});
+
+document
+  .getElementById("confirmDelete")
+  .addEventListener("click", async function () {
+    try {
+      const response = await fetch(api + "/" + deleteId, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        showToast("🗑 Student Deleted Successfully");
+
+        loadStudents();
+      } else {
+        showToast("❌ Delete Failed", "error");
+      }
+    } catch (error) {
+      showToast("❌ Server Error", "error");
+    }
+
+    document.getElementById("deleteModal").classList.remove("show");
+  });
+// ==========================
+// Clear Form
+// ==========================
 
 function clearFields() {
   document.getElementById("studentId").value = "";
@@ -177,9 +238,71 @@ function clearFields() {
 
   editMode = false;
 
-  document.getElementById("saveBtn").innerHTML = "Add Student";
+  document.getElementById("saveBtn").innerHTML = "➕ Add Student";
+
+  document.querySelector(".form-card h3").innerHTML = "Add New Student";
 }
 
-// Button Connection
+// ==========================
+// Live Search
+// ==========================
 
-document.getElementById("saveBtn").addEventListener("click", saveStudent);
+function filterStudents() {
+  const keyword = document.getElementById("searchInput").value.toLowerCase();
+
+  const rows = document.querySelectorAll("#studentTable tr");
+
+  rows.forEach((row) => {
+    const text = row.innerText.toLowerCase();
+
+    row.style.display = text.includes(keyword) ? "" : "none";
+  });
+}
+
+// ==========================
+// Enter Key Support
+// ==========================
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    const active = document.activeElement;
+
+    if (
+      active.id === "name" ||
+      active.id === "age" ||
+      active.id === "department"
+    ) {
+      saveStudent();
+    }
+  }
+});
+
+// ==========================
+// Input Focus Animation
+// ==========================
+
+document.querySelectorAll(".form input").forEach((input) => {
+  input.addEventListener("focus", () => {
+    input.style.transform = "scale(1.03)";
+  });
+
+  input.addEventListener("blur", () => {
+    input.style.transform = "scale(1)";
+  });
+});
+
+// ==========================
+// Auto Refresh Every 30 Seconds
+// ==========================
+
+setInterval(() => {
+  loadStudents();
+}, 30000);
+
+// ==========================
+// Total Student Counter Animation
+// ==========================
+
+function animateCounter(total) {
+  document.getElementById("totalStudents").innerHTML = total;
+}
