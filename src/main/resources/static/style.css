@@ -1,129 +1,231 @@
+/* ===========================
+   BODY
+=========================== */
+
 body {
   margin: 0;
-
   padding: 0;
-
   font-family: Arial, sans-serif;
 
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
     url("background.jpg");
 
   background-size: cover;
-
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 
   min-height: 100vh;
 }
 
+/* ===========================
+   CONTAINER
+=========================== */
+
 .container {
   width: 85%;
+  max-width: 1000px;
 
   margin: 50px auto;
 
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.92);
 
   padding: 30px;
 
-  border-radius: 15px;
+  border-radius: 20px;
 
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.4);
 }
+
+/* ===========================
+   TITLE
+=========================== */
 
 h1 {
   text-align: center;
-
   color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 40px;
 }
+
+/* ===========================
+   FORM
+=========================== */
 
 .form {
   text-align: center;
-
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
+
+/* ===========================
+   INPUT BOX
+=========================== */
 
 input {
   width: 220px;
 
-  padding: 10px;
+  padding: 12px;
 
   margin: 8px;
 
-  border-radius: 5px;
+  border-radius: 8px;
 
   border: 1px solid #ccc;
+
+  font-size: 15px;
+
+  transition: 0.3s;
 }
 
+input:focus {
+  outline: none;
+
+  border-color: #3498db;
+
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
 button {
-  padding: 10px 18px;
+  padding: 12px 22px;
 
   border: none;
 
-  border-radius: 6px;
+  border-radius: 8px;
 
   cursor: pointer;
 
-  font-size: 14px;
+  font-size: 15px;
 
   color: white;
+
+  transition: 0.3s ease;
 }
 
-/* Add Button */
+/* ===========================
+   ADD BUTTON
+=========================== */
 
 #saveBtn {
-  background-color: #27ae60;
+  background: #27ae60;
 }
 
 #saveBtn:hover {
-  background-color: #1e8449;
+  background: #2980b9;
+
+  transform: scale(1.08);
+
+  box-shadow: 0 8px 18px rgba(41, 128, 185, 0.5);
 }
 
-/* Table */
+/* ===========================
+   TABLE
+=========================== */
 
 table {
   width: 100%;
 
   border-collapse: collapse;
+
+  overflow: hidden;
+
+  border-radius: 12px;
 }
 
 th {
-  background-color: #34495e;
+  background: #2c3e50;
 
   color: white;
 
-  padding: 12px;
+  padding: 14px;
+
+  font-size: 16px;
 }
 
 td {
-  padding: 12px;
+  padding: 14px;
 
   text-align: center;
 
   border-bottom: 1px solid #ddd;
 }
 
-tr:hover {
-  background-color: #f2f2f2;
+tr:nth-child(even) {
+  background: #f7f7f7;
 }
 
-/* Edit Button */
+tr:hover {
+  background: #d6eaf8;
+
+  transition: 0.3s;
+}
+
+/* ===========================
+   EDIT BUTTON
+=========================== */
 
 .edit-btn {
-  background-color: #3498db;
+  background: #3498db;
 
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
 .edit-btn:hover {
-  background-color: #21618c;
+  background: #21618c;
+
+  transform: scale(1.08);
+
+  box-shadow: 0 8px 18px rgba(52, 152, 219, 0.5);
 }
 
-/* Delete Button */
+/* ===========================
+   DELETE BUTTON
+=========================== */
 
 .delete-btn {
-  background-color: #e74c3c;
+  background: #e74c3c;
 }
 
 .delete-btn:hover {
-  background-color: #922b21;
+  background: #922b21;
+
+  transform: scale(1.08);
+
+  box-shadow: 0 8px 18px rgba(231, 76, 60, 0.5);
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+
+    padding: 20px;
+  }
+
+  input {
+    width: 90%;
+  }
+
+  button {
+    width: 95%;
+
+    margin-top: 10px;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
 }
