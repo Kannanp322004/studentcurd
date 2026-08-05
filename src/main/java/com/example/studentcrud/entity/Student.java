@@ -1,86 +1,80 @@
 package com.example.studentcrud.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Students")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
-    private String name;
+    @Column(nullable = false)
+    private String Name;
 
-    private int age;
+    @Column(nullable = false)
+    private int Age;
 
-    private String gender;
+    @Column(nullable = false)
+    private String Gender;
 
-    private String department;
-
+    @Column(nullable = false)
+    private String Department;
 
     public Student() {
-
     }
 
-
-    public Student(Long id, String name, int age, String gender, String department) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-        this.department = department;
+    public Student(Long Id, String Name, int Age, String Gender, String Department) {
+        this.Id = Id;
+        this.Name = Name;
+        this.Age = Age;
+        this.Gender = Gender;
+        this.Department = Department;
     }
-
 
     public Long getId() {
-        return id;
+        return Id;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long Id) {
+        this.Id = Id;
     }
-
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
-
 
     public int getAge() {
-        return age;
+        return Age;
     }
 
-
-    public void setAge(int age) {
-        this.age = age;
+    public void setAge(int Age) {
+        this.Age = Age;
     }
-
 
     public String getGender() {
-        return gender;
+        return Gender;
     }
 
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setGender(String Gender) {
+        this.Gender = Gender;
     }
-
 
     public String getDepartment() {
-        return department;
+        return Department;
     }
 
-
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartment(String Department) {
+        this.Department = Department;
     }
 }

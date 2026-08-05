@@ -1,124 +1,150 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Management System</title>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
+    <link rel="stylesheet" href="style.css">
 
-  <body>
-    <!-- Hero Section -->
-    <header class="hero">
-      <h1>🎓 Student Management System</h1>
-      <p>Manage Student Records Easily with Spring Boot & PostgreSQL</p>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+
+        <h1>🎓 Student Management System</h1>
+
+        <p>Department Management Portal</p>
+
     </header>
 
     <!-- Dashboard -->
     <section class="dashboard">
-      <div class="card total-card">
-        <div class="icon">👨‍🎓</div>
 
-        <h2 id="totalStudents">0</h2>
+        <div class="card">
 
-        <p>Total Students</p>
-      </div>
-      <div class="card">
-        <div class="icon">⚙️</div>
-        <h2>CRUD</h2>
-        <p>Operations</p>
-      </div>
+            <h2 id="totalDepartments">0</h2>
 
-      <div class="card">
-        <div class="icon">☕</div>
-        <h2>Spring Boot</h2>
-        <p>Backend</p>
-      </div>
+            <p>Total Departments</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2 id="totalStudents">0</h2>
+
+            <p>Total Students</p>
+
+        </div>
+
     </section>
 
-    <!-- Main Container -->
-    <main class="container">
-      <!-- Search -->
-      <div class="top-bar">
-        <h2>📚 Student Records</h2>
+    <!-- Department Section -->
+    <section class="department-container">
 
-        <input type="text" id="searchInput" placeholder="🔍 Search Student" />
-      </div>
+        <div class="top-bar">
 
-      <!-- Form -->
-      <div class="form-card">
-        <h3>Add New Student</h3>
+            <h2>Departments</h2>
 
-        <div class="form">
-          <!-- Hidden Student ID -->
-          <input type="hidden" id="studentId" />
+            <button id="addDepartmentBtn">
+                + Add Department
+            </button>
 
-          <input type="text" id="name" placeholder="👤 Student Name" />
-
-          <input type="number" id="age" placeholder="🎂 Age" />
-
-          <select id="gender">
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-
-          <input type="text" id="department" placeholder="🏢 Department" />
-
-          <button id="saveBtn">➕ Add Student</button>
         </div>
-      </div>
 
-      <!-- Table -->
-
-      <div class="table-card">
         <table>
-          <thead>
-            <tr>
-              <th>ID</th>
 
-              <th>Name</th>
+            <thead>
 
-              <th>Age</th>
+                <tr>
 
-              <th>Gender</th>
+                    <th>ID</th>
 
-              <th>Department</th>
+                    <th>Department</th>
 
-              <th>Action</th>
-            </tr>
-          </thead>
+                    <th>Students</th>
 
-          <tbody id="studentTable"></tbody>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="departmentTable">
+
+                <!-- Data from JavaScript -->
+
+            </tbody>
+
         </table>
-      </div>
-    </main>
-    <!-- Delete Confirmation Modal -->
 
-    <div id="deleteModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-icon">⚠️</div>
+    </section>
 
-        <h2>Delete Student?</h2>
+    <!-- Add Department Modal -->
 
-        <p>This action cannot be undone.</p>
+    <div id="departmentModal" class="modal">
 
-        <div class="modal-buttons">
-          <button id="cancelDelete" class="cancel-btn">Cancel</button>
+        <div class="modal-content">
 
-          <button id="confirmDelete" class="confirm-btn">Delete</button>
+            <h2>Add Department</h2>
+
+            <input
+                type="text"
+                id="departmentName"
+                placeholder="Department Name">
+
+            <input
+                type="password"
+                id="departmentPassword"
+                placeholder="Password">
+
+            <button id="saveDepartment">
+                Save Department
+            </button>
+
+            <button id="closeModal">
+                Cancel
+            </button>
+
         </div>
-      </div>
+
     </div>
 
-    <footer>
-      <p>
-        © 2026 Student Management System | Spring Boot • PostgreSQL • Render
-      </p>
-    </footer>
-    <div id="toast" class="toast"></div>
-    <script src="script.js"></script>
-  </body>
+    <!-- Login Modal -->
+
+    <div id="loginModal" class="modal">
+
+        <div class="modal-content">
+
+            <h2 id="loginDepartmentTitle">
+                Department Login
+            </h2>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter Password">
+
+            <button id="loginButton">
+                Login
+            </button>
+
+            <button id="closeLogin">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="home.js"></script>
+
+</body>
+
 </html>

@@ -22,8 +22,7 @@ public class StudentService {
 
 
     // Add Student
-
-    public Student saveStudent(Student student){
+    public Student saveStudent(Student student) {
 
         return studentRepository.save(student);
 
@@ -32,8 +31,7 @@ public class StudentService {
 
 
     // Get All Students
-
-    public List<Student> getAllStudents(){
+    public List<Student> getAllStudents() {
 
         return studentRepository.findAll();
 
@@ -41,9 +39,20 @@ public class StudentService {
 
 
 
-    // Get Student By ID
+    // Get Students By Department
+    public List<Student> getStudentsByDepartment(
+            String department) {
 
-    public Optional<Student> getStudentById(Long id){
+
+        return studentRepository
+                .findByDepartment(department);
+
+    }
+
+
+
+    // Get Student By ID
+    public Optional<Student> getStudentById(Long id) {
 
         return studentRepository.findById(id);
 
@@ -52,25 +61,37 @@ public class StudentService {
 
 
     // Update Student
+    public Student updateStudent(
+            Long id,
+            Student student) {
 
-    public Student updateStudent(Long id, Student student){
 
-
-        Student existingStudent = studentRepository
+        Student existingStudent =
+                studentRepository
                 .findById(id)
-                .orElseThrow(() -> 
-                new RuntimeException("Student not found"));
+                .orElseThrow(() ->
+                new RuntimeException("Student Not Found"));
 
 
 
-        existingStudent.setName(student.getName());
+        existingStudent.setName(
+                student.getName()
+        );
 
-        existingStudent.setAge(student.getAge());
 
-        existingStudent.setGender(student.getGender());
+        existingStudent.setAge(
+                student.getAge()
+        );
 
-        existingStudent.setDepartment(student.getDepartment());
 
+        existingStudent.setGender(
+                student.getGender()
+        );
+
+
+        existingStudent.setDepartment(
+                student.getDepartment()
+        );
 
 
         return studentRepository.save(existingStudent);
@@ -80,8 +101,7 @@ public class StudentService {
 
 
     // Delete Student
-
-    public String deleteStudent(Long id){
+    public String deleteStudent(Long id) {
 
 
         studentRepository.deleteById(id);
@@ -90,6 +110,5 @@ public class StudentService {
         return "Student Deleted Successfully";
 
     }
-
 
 }
