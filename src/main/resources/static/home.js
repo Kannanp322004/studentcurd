@@ -34,7 +34,7 @@ window.onload = function () {
 
 async function LoadDepartments() {
   try {
-    const response = await fetch(DepartmentApi);
+    const response = await fetch(DepartmentApi + "/summary");
 
     const departments = await response.json();
 

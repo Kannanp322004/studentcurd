@@ -41,6 +41,29 @@ async function LoadStudents() {
 
     const students = await response.json();
 
+    console.log(students);
+    console.log("Total Students:", students.length);
+
+    // Total Students
+    document.getElementById("departmentStudentCount").innerHTML =
+      "Total Students : " + students.length;
+
+    // Male Count
+    const maleCount = students.filter(
+      (student) => student.gender === "Male",
+    ).length;
+
+    // Female Count
+    const femaleCount = students.filter(
+      (student) => student.gender === "Female",
+    ).length;
+
+    // Display Counts
+    document.getElementById("maleStudentCount").innerHTML =
+      "👨 Male Students : " + maleCount;
+
+    document.getElementById("femaleStudentCount").innerHTML =
+      "👩 Female Students : " + femaleCount;
     const table = document.getElementById("studentTable");
 
     table.innerHTML = "";

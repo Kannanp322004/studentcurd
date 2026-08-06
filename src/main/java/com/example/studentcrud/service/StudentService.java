@@ -16,13 +16,14 @@ import com.example.studentcrud.repository.StudentRepository;
 public class StudentService {
 
 
+
     @Autowired
     private StudentRepository studentRepository;
 
 
 
-    // Add Student
-    public Student saveStudent(Student student) {
+    // CREATE
+    public Student saveStudent(Student student){
 
         return studentRepository.save(student);
 
@@ -30,29 +31,23 @@ public class StudentService {
 
 
 
-    // Get All Students
-    public List<Student> getAllStudents() {
+    // READ ALL
+    public List<Student> getAllStudents(){
 
         return studentRepository.findAll();
 
     }
 
+    // Get Total Students
+    public long getTotalStudents() {
 
-
-    // Get Students By Department
-    public List<Student> getStudentsByDepartment(
-            String department) {
-
-
-        return studentRepository
-                .findByDepartment(department);
+        return studentRepository.count();
 
     }
 
 
-
-    // Get Student By ID
-    public Optional<Student> getStudentById(Long id) {
+    // READ BY ID
+    public Optional<Student> getStudentById(Long id){
 
         return studentRepository.findById(id);
 
@@ -60,38 +55,34 @@ public class StudentService {
 
 
 
-    // Update Student
-    public Student updateStudent(
-            Long id,
-            Student student) {
+    // READ BY DEPARTMENT
+    public List<Student> getStudentsByDepartment(String department){
+
+        return studentRepository.findByDepartment(department);
+
+    }
+
+
+
+
+    // UPDATE
+    public Student updateStudent(Long id, Student student){
 
 
         Student existingStudent =
-                studentRepository
-                .findById(id)
-                .orElseThrow(() ->
-                new RuntimeException("Student Not Found"));
+                studentRepository.findById(id)
+                .orElseThrow(
+                () -> new RuntimeException("Student Not Found")
+                );
 
 
+        existingStudent.setName(student.getName());
 
-        existingStudent.setName(
-                student.getName()
-        );
+        existingStudent.setDepartment(student.getDepartment());
 
+        existingStudent.setAge(student.getAge());
 
-        existingStudent.setAge(
-                student.getAge()
-        );
-
-
-        existingStudent.setGender(
-                student.getGender()
-        );
-
-
-        existingStudent.setDepartment(
-                student.getDepartment()
-        );
+        existingStudent.setGender(student.getGender());
 
 
         return studentRepository.save(existingStudent);
@@ -100,15 +91,15 @@ public class StudentService {
 
 
 
-    // Delete Student
-    public String deleteStudent(Long id) {
 
+    // DELETE
+    public String deleteStudent(Long id){
 
         studentRepository.deleteById(id);
-
 
         return "Student Deleted Successfully";
 
     }
+
 
 }

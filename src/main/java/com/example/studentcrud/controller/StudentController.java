@@ -22,8 +22,9 @@ import com.example.studentcrud.service.StudentService;
 
 @RestController
 @RequestMapping("/students")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class StudentController {
+
 
 
     @Autowired
@@ -31,10 +32,10 @@ public class StudentController {
 
 
 
-    // Add Student
+    // CREATE STUDENT
+
     @PostMapping
-    public Student createStudent(
-            @RequestBody Student student) {
+    public Student addStudent(@RequestBody Student student){
 
         return studentService.saveStudent(student);
 
@@ -42,34 +43,32 @@ public class StudentController {
 
 
 
-    // Get All Students
+
+    // GET ALL STUDENTS
+
     @GetMapping
-    public List<Student> getAllStudents() {
+    public List<Student> getStudents(){
 
         return studentService.getAllStudents();
 
     }
 
 
+    // GET TOTAL STUDENTS
 
-    // Get Students By Department
-    @GetMapping("/department/{departmentName}")
-    public List<Student> getStudentsByDepartment(
-            @PathVariable String departmentName) {
+    @GetMapping("/count")
+    public long getTotalStudents() {
 
-
-        return studentService
-                .getStudentsByDepartment(departmentName);
+        return studentService.getTotalStudents();
 
     }
 
 
+    // GET STUDENT BY ID
 
-    // Get Student By ID
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public Optional<Student> getStudentById(
-            @PathVariable Long id) {
-
+            @PathVariable Long id){
 
         return studentService.getStudentById(id);
 
@@ -77,23 +76,44 @@ public class StudentController {
 
 
 
-    // Update Student
-    @PutMapping("/{id}")
-    public Student updateStudent(
-            @PathVariable Long id,
-            @RequestBody Student student) {
 
 
-        return studentService.updateStudent(id, student);
+    // GET BY DEPARTMENT
+
+    @GetMapping("/department/{department}")
+    public List<Student> getByDepartment(
+            @PathVariable String department){
+
+        return studentService
+                .getStudentsByDepartment(department);
 
     }
 
 
 
-    // Delete Student
+
+
+    // UPDATE STUDENT
+
+    @PutMapping("/{id}")
+    public Student updateStudent(
+            @PathVariable Long id,
+            @RequestBody Student student){
+
+
+        return studentService
+                .updateStudent(id, student);
+
+    }
+
+
+
+
+    // DELETE STUDENT
+
     @DeleteMapping("/{id}")
     public String deleteStudent(
-            @PathVariable Long id) {
+            @PathVariable Long id){
 
 
         return studentService.deleteStudent(id);
