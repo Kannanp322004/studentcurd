@@ -1,6 +1,5 @@
 package com.example.studentcrud.controller;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,106 +17,68 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.studentcrud.entity.Student;
 import com.example.studentcrud.service.StudentService;
 
-
-
 @RestController
 @RequestMapping("/students")
 @CrossOrigin
 public class StudentController {
 
-
-
     @Autowired
     private StudentService studentService;
 
-
-
     // CREATE STUDENT
-
     @PostMapping
-    public Student addStudent(@RequestBody Student student){
+    public Student addStudent(
+            @RequestBody Student student) {
 
         return studentService.saveStudent(student);
-
     }
-
-
-
 
     // GET ALL STUDENTS
-
     @GetMapping
-    public List<Student> getStudents(){
+    public List<Student> getStudents() {
 
         return studentService.getAllStudents();
-
     }
 
-
     // GET TOTAL STUDENTS
-
     @GetMapping("/count")
     public long getTotalStudents() {
 
         return studentService.getTotalStudents();
-
     }
 
-
-    // GET STUDENT BY ID
-
+    // GET STUDENT BY DATABASE ID
     @GetMapping("/{id:[0-9]+}")
     public Optional<Student> getStudentById(
-            @PathVariable Long id){
+            @PathVariable Long id) {
 
         return studentService.getStudentById(id);
-
     }
 
-
-
-
-
-    // GET BY DEPARTMENT
-
+    // GET STUDENTS BY DEPARTMENT
     @GetMapping("/department/{department}")
     public List<Student> getByDepartment(
-            @PathVariable String department){
+            @PathVariable String department) {
 
         return studentService
                 .getStudentsByDepartment(department);
-
     }
 
-
-
-
-
     // UPDATE STUDENT
-
     @PutMapping("/{id}")
     public Student updateStudent(
             @PathVariable Long id,
-            @RequestBody Student student){
-
+            @RequestBody Student student) {
 
         return studentService
                 .updateStudent(id, student);
-
     }
-
-
-
 
     // DELETE STUDENT
-
     @DeleteMapping("/{id}")
     public String deleteStudent(
-            @PathVariable Long id){
-
+            @PathVariable Long id) {
 
         return studentService.deleteStudent(id);
-
     }
-
 }

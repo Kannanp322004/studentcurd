@@ -12,4 +12,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     long countByDepartment(String department);
 
+    Student findTopByDepartmentOrderByStudentIdDesc(String department);
 }

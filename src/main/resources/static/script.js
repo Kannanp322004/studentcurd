@@ -54,12 +54,19 @@ async function saveStudent() {
 
   const department = document.getElementById("department").value.trim();
 
-  if (name === "" || age === "" || gender === "" || department === "") {
+  if (
+    id === "" ||
+    name === "" ||
+    age === "" ||
+    gender === "" ||
+    department === ""
+  ) {
     showToast("⚠ Please fill all fields", "warning");
     return;
   }
 
   const student = {
+    id: parseInt(id),
     name: name,
     age: parseInt(age),
     gender: gender,

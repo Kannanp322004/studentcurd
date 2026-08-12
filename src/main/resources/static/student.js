@@ -5,13 +5,14 @@ const UrlParams = new URLSearchParams(window.location.search);
 const Department = UrlParams.get("department");
 
 let EditMode = false;
+let DatabaseId = null;
 
 // ==========================
-// Page Load
+// PAGE LOAD
 // ==========================
 
 window.onload = function () {
-  if (Department == null || Department == "") {
+  if (!Department) {
     alert("Department Not Found");
 
     window.location.href = "index.html";
@@ -22,119 +23,145 @@ window.onload = function () {
   document.getElementById("departmentTitle").innerHTML =
     Department + " Department";
 
-  LoadStudents();
-
   document.getElementById("saveBtn").addEventListener("click", SaveStudent);
 
   document.getElementById("search").addEventListener("keyup", SearchStudent);
+
+  LoadStudents();
 };
 
 // ==========================
-// Load Students
+// LOAD STUDENTS
 // ==========================
 
 async function LoadStudents() {
   try {
-    const response = await fetch(
+    const Response = await fetch(
       Api + "/department/" + encodeURIComponent(Department),
     );
 
-    const students = await response.json();
+    if (!Response.ok) {
+      throw new Error("Unable to load students");
+    }
 
-    console.log(students);
-    console.log("Total Students:", students.length);
+    const Students = await Response.json();
 
-    // Total Students
+    console.log("Students received:", Students);
+
+    // ==========================
+    // TOTAL
+    // ==========================
+
     document.getElementById("departmentStudentCount").innerHTML =
-      "Total Students : " + students.length;
+      "Total Students : " + Students.length;
 
-    // Male Count
-    const maleCount = students.filter(
+    // ==========================
+    // MALE
+    // ==========================
+
+    const MaleCount = Students.filter(
       (student) => student.gender === "Male",
     ).length;
 
-    // Female Count
-    const femaleCount = students.filter(
+    // ==========================
+    // FEMALE
+    // ==========================
+
+    const FemaleCount = Students.filter(
       (student) => student.gender === "Female",
     ).length;
 
-    // Display Counts
     document.getElementById("maleStudentCount").innerHTML =
-      "👨 Male Students : " + maleCount;
+      "👨 Male Students : " + MaleCount;
 
     document.getElementById("femaleStudentCount").innerHTML =
-      "👩 Female Students : " + femaleCount;
-    const table = document.getElementById("studentTable");
+      "👩 Female Students : " + FemaleCount;
 
-    table.innerHTML = "";
+    // ==========================
+    // TABLE
+    // ==========================
 
-    students.forEach((student) => {
-      table.innerHTML += `
+    const Table = document.getElementById("studentTable");
 
-            <tr>
+    Table.innerHTML = "";
 
-                <td>${student.id}</td>
+    Students.forEach((student) => {
+      Table.innerHTML += `
 
-                <td>${student.name}</td>
+                <tr>
 
-                <td>${student.age}</td>
+                    <td>
+                        ${student.studentId}
+                    </td>
 
-                <td>${student.gender}</td>
+                    <td>
+                        ${student.name}
+                    </td>
 
-                <td>
+                    <td>
+                        ${student.age}
+                    </td>
 
-                    <button
-                        class="edit-btn"
-                        onclick="EditStudent(${student.id})">
+                    <td>
+                        ${student.gender}
+                    </td>
 
-                        Edit
+                    <td>
 
-                    </button>
+                        <button
+                            class="edit-btn"
+                            onclick="EditStudent(${student.databaseId})">
 
-                    <button
-                        class="delete-btn"
-                        onclick="DeleteStudent(${student.id})">
+                            ✏ Edit
 
-                        Delete
+                        </button>
 
-                    </button>
 
-                </td>
+                        <button
+                            class="delete-btn"
+                            onclick="DeleteStudent(${student.databaseId})">
 
-            </tr>
+                            🗑 Delete
+
+                        </button>
+
+                    </td>
+
+                </tr>
 
             `;
     });
-  } catch (error) {
+  } catch (Error) {
+    console.error("Load Students Error:", Error);
+
     alert("Unable To Load Students");
   }
 }
 
 // ==========================
-// Go Home
-// ==========================
-
-function GoHome() {
-  window.location.href = "index.html";
-}
-// ==========================
-// Save Student
+// SAVE STUDENT
 // ==========================
 
 async function SaveStudent() {
-  const Id = document.getElementById("studentId").value;
-
   const Name = document.getElementById("name").value.trim();
 
   const Age = document.getElementById("age").value;
 
   const Gender = document.getElementById("gender").value;
 
-  if (Name == "" || Age == "" || Gender == "") {
+  // ==========================
+  // VALIDATION
+  // ==========================
+
+  if (Name === "" || Age === "" || Gender === "") {
     alert("Please Fill All Fields");
 
     return;
   }
+
+  // ==========================
+  // STUDENT OBJECT
+  // ==========================
 
   const Student = {
     name: Name,
@@ -146,84 +173,138 @@ async function SaveStudent() {
     department: Department,
   };
 
-  let Response;
+  try {
+    let Response;
 
-  if (EditMode) {
-    Response = await fetch(Api + "/" + Id, {
-      method: "PUT",
+    // ==========================
+    // UPDATE
+    // ==========================
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+    if (EditMode) {
+      console.log("Updating Database ID:", DatabaseId);
 
-      body: JSON.stringify(Student),
-    });
-  } else {
-    Response = await fetch(Api, {
-      method: "POST",
+      Response = await fetch(Api + "/" + DatabaseId, {
+        method: "PUT",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-      body: JSON.stringify(Student),
-    });
-  }
+        body: JSON.stringify(Student),
+      });
+    }
 
-  if (Response.ok) {
-    ClearForm();
+    // ==========================
+    // ADD
+    // ==========================
+    else {
+      console.log("Adding student to:", Department);
 
-    LoadStudents();
-  } else {
-    alert("Unable To Save Student");
+      Response = await fetch(Api, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(Student),
+      });
+    }
+
+    // ==========================
+    // RESPONSE
+    // ==========================
+
+    if (Response.ok) {
+      alert(
+        EditMode
+          ? "Student Updated Successfully"
+          : "Student Added Successfully",
+      );
+
+      ClearForm();
+
+      await LoadStudents();
+    } else {
+      const ErrorText = await Response.text();
+
+      console.error("Server Error:", ErrorText);
+
+      alert("Unable To Save Student\n\n" + ErrorText);
+    }
+  } catch (Error) {
+    console.error("Save Student Error:", Error);
+
+    alert("Server Error\n\n" + Error.message);
   }
 }
 
 // ==========================
-// Clear Form
-// ==========================
-
-function ClearForm() {
-  document.getElementById("studentId").value = "";
-
-  document.getElementById("name").value = "";
-
-  document.getElementById("age").value = "";
-
-  document.getElementById("gender").value = "";
-
-  EditMode = false;
-
-  document.getElementById("saveBtn").innerHTML = "Save Student";
-}
-// ==========================
-// Edit Student
+// EDIT STUDENT
 // ==========================
 
 async function EditStudent(Id) {
   try {
+    console.log("Editing Database ID:", Id);
+
     const Response = await fetch(Api + "/" + Id);
+
+    if (!Response.ok) {
+      throw new Error("Student not found");
+    }
 
     const Student = await Response.json();
 
-    document.getElementById("studentId").value = Student.id;
+    console.log("Student received:", Student);
+
+    // ==========================
+    // STORE DATABASE ID
+    // ==========================
+
+    DatabaseId = Student.databaseId;
+
+    // ==========================
+    // DISPLAY STUDENT ID
+    // ==========================
+
+    document.getElementById("studentId").value = Student.studentId;
+
+    // ==========================
+    // DISPLAY NAME
+    // ==========================
 
     document.getElementById("name").value = Student.name;
 
+    // ==========================
+    // DISPLAY AGE
+    // ==========================
+
     document.getElementById("age").value = Student.age;
 
+    // ==========================
+    // DISPLAY GENDER
+    // ==========================
+
     document.getElementById("gender").value = Student.gender;
+
+    // ==========================
+    // EDIT MODE
+    // ==========================
 
     EditMode = true;
 
     document.getElementById("saveBtn").innerHTML = "Update Student";
-  } catch (error) {
-    alert("Unable To Load Student");
+
+    document.getElementById("name").focus();
+  } catch (Error) {
+    console.error("Edit Error:", Error);
+
+    alert("Unable To Load Student\n\n" + Error.message);
   }
 }
 
 // ==========================
-// Delete Student
+// DELETE STUDENT
 // ==========================
 
 async function DeleteStudent(Id) {
@@ -243,16 +324,43 @@ async function DeleteStudent(Id) {
     if (Response.ok) {
       alert("Student Deleted Successfully");
 
-      LoadStudents();
+      await LoadStudents();
     } else {
+      const ErrorText = await Response.text();
+
+      console.error(ErrorText);
+
       alert("Unable To Delete Student");
     }
-  } catch (error) {
+  } catch (Error) {
+    console.error("Delete Error:", Error);
+
     alert("Server Error");
   }
 }
+
 // ==========================
-// Search Student
+// CLEAR FORM
+// ==========================
+
+function ClearForm() {
+  document.getElementById("studentId").value = "";
+
+  document.getElementById("name").value = "";
+
+  document.getElementById("age").value = "";
+
+  document.getElementById("gender").value = "";
+
+  DatabaseId = null;
+
+  EditMode = false;
+
+  document.getElementById("saveBtn").innerHTML = "Save Student";
+}
+
+// ==========================
+// SEARCH
 // ==========================
 
 function SearchStudent() {
@@ -263,26 +371,36 @@ function SearchStudent() {
   Rows.forEach((Row) => {
     const Text = Row.innerText.toLowerCase();
 
-    if (Text.includes(Keyword)) {
-      Row.style.display = "";
-    } else {
-      Row.style.display = "none";
-    }
+    Row.style.display = Text.includes(Keyword) ? "" : "none";
   });
 }
+
 // ==========================
-// Auto Refresh Every 30 Seconds
+// HOME
+// ==========================
+
+function GoHome() {
+  window.location.href = "index.html";
+}
+
+// ==========================
+// AUTO REFRESH
 // ==========================
 
 setInterval(function () {
   LoadStudents();
 }, 30000);
+
 // ==========================
-// Enter Key Support
+// ENTER KEY
 // ==========================
 
 document.addEventListener("keydown", function (Event) {
   if (Event.key === "Enter") {
-    SaveStudent();
+    const Active = document.activeElement;
+
+    if (Active.id === "name" || Active.id === "age" || Active.id === "gender") {
+      SaveStudent();
+    }
   }
 });
