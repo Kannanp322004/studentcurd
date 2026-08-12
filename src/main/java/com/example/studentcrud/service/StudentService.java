@@ -20,30 +20,23 @@ public class StudentService {
     // CREATE STUDENT
     // ==========================
 
-    public Student saveStudent(Student student) {
+   public Student saveStudent(Student student) {
 
-        Student lastStudent =
-                studentRepository
-                        .findTopByDepartmentOrderByStudentIdDesc(
-                                student.getDepartment());
+    Student lastStudent =
+            studentRepository
+                    .findTopByDepartmentOrderByStudentIdDesc(
+                            student.getDepartment());
 
-        Long nextStudentId;
+    Long nextStudentId = 1L;
 
-        if (lastStudent == null) {
-
-            nextStudentId = 1L;
-
-        } else {
-
-            nextStudentId =
-                    lastStudent.getStudentId() + 1;
-        }
-
-        student.setStudentId(nextStudentId);
-
-        return studentRepository.save(student);
+    if (lastStudent != null && lastStudent.getStudentId() != null) {
+        nextStudentId = lastStudent.getStudentId() + 1;
     }
 
+    student.setStudentId(nextStudentId);
+
+    return studentRepository.save(student);
+}
 
     // ==========================
     // READ ALL
